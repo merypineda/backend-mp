@@ -11,10 +11,14 @@ ma = Marshmallow(app)
 api = Api(app)
 CORS(app)
 
+@app.route('/')
+def note():
+    return "Welcome to my quotes"
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
-    content = db.Column(db.String(255))
+    content = db.Column(db.String(1000))
 
     def __repr__(self):
         return '<Post %s>' % self.title
@@ -55,6 +59,7 @@ class PostResource(Resource):
             post.title = request.json['title']
         if 'content' in request.json:
             post.content = request.json['content']
+        
 
         db.session.commit()
         return post_schema.dump(post)
